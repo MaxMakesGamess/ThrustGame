@@ -4,7 +4,7 @@ using System.Numerics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{  
+{  //delte this comment
     Rigidbody rb;
     [SerializeField] float mainThrust = 1000;
     [SerializeField] float rotateSpeed = 100;
