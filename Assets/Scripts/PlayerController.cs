@@ -6,12 +6,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {  //delte this comment
     Rigidbody rb;
+    AudioSource audioSource;
     [SerializeField] float mainThrust = 1000;
     [SerializeField] float rotateSpeed = 100;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -24,6 +26,15 @@ public class PlayerController : MonoBehaviour
     void processThrust(){
         if(Input.GetKey(KeyCode.Space) || Input.GetMouseButtonDown(0)){
             rb.AddRelativeForce(UnityEngine.Vector3.up * Time.deltaTime * mainThrust);
+            if(!audioSource.isPlaying)
+            {
+            audioSource.Play();
+            }
+             
+        }
+        else
+        {
+           audioSource.Stop();
         }
     }
     void ProcessRotation(){
