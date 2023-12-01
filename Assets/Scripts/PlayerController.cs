@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {  //delte this comment
-    Rigidbody rb;
-    AudioSource audioSource;
     [SerializeField] float mainThrust = 1000;
     [SerializeField] float rotateSpeed = 100;
+    [SerializeField] AudioClip mainEngine;
+
+     Rigidbody rb;
+     AudioSource audioSource;
+
+     bool isAlive;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +32,7 @@ public class PlayerController : MonoBehaviour
             rb.AddRelativeForce(UnityEngine.Vector3.up * Time.deltaTime * mainThrust);
             if(!audioSource.isPlaying)
             {
-            audioSource.Play();
+            audioSource.PlayOneShot(mainEngine);
             }
              
         }
