@@ -7,25 +7,42 @@ using System;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] float loadDelay = 1f;
-    [SerializeField] AudioClip levelComplete;
+    [SerializeField] AudioClip success;
     [SerializeField] AudioClip crash;
+
+    [SerializeField] ParticleSystem successParticles;
+    [SerializeField] ParticleSystem crashParticles;
     [SerializeField] float soundEffectVolume = .5f;
 
     AudioSource audioSource;
     bool isTransitioning = false;
+    bool collisionDisabled = false;
 
     int currentSceneIndex;
     void Start(){
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         audioSource = GetComponent<AudioSource>();
     }
+
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.L)){
+            LoadNextScene();
+        }
+        if(Input.GetKeyDown(KeyCode.C)){
+            collisionDisabled = !collisionDisabled; //toggle collision
+        }
+        
+    }
+
     //get index of current scene   
     void OnCollisionEnter(Collision other){
-        if(isTransitioning){
+        if(isTransitioning || collisionDisabled){
             return;
         }
         
             switch (other.gameObject.tag){
+                case "CameraBounds":
+                    break; //ignore
                 case "Friendly":
                     UnityEngine.Debug.Log("You landed on a launch Pad");
                     break;
@@ -47,7 +64,8 @@ public class CollisionHandler : MonoBehaviour
     void SuccessSequence(){
         isTransitioning = true;
         audioSource.Stop();
-        audioSource.PlayOneShot(levelComplete, soundEffectVolume);
+        audioSource.PlayOneShot(success, soundEffectVolume);
+        successParticles.Play();
         DisableMovement();
         Invoke("LoadNextScene", loadDelay);
     }
@@ -55,6 +73,7 @@ public class CollisionHandler : MonoBehaviour
         isTransitioning = true;
         audioSource.Stop();
         audioSource.PlayOneShot(crash, soundEffectVolume);
+        crashParticles.Play();
         DisableMovement();
         Invoke("ReloadScene", loadDelay);
     }
@@ -69,4 +88,5 @@ public class CollisionHandler : MonoBehaviour
         }
         SceneManager.LoadScene(nextSceneIndex);
     }
+
 }
