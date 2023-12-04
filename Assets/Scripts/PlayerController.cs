@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -29,6 +30,13 @@ public class PlayerController : MonoBehaviour
     {
         ProcessThrust();
         ProcessRotation();
+    }
+
+    void FixedUpdate()
+    {
+        // Reset the Z rotation to 0 (or any desired value)
+        transform.rotation = UnityEngine.Quaternion.Euler(0, 0, 
+                                            transform.rotation.eulerAngles.z);
     }
 
     void ProcessThrust(){

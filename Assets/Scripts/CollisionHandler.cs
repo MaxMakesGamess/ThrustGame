@@ -18,6 +18,7 @@ public class CollisionHandler : MonoBehaviour
     bool isTransitioning = false;
     bool collisionDisabled = false;
 
+    private static int deathCounter = 0;
     int currentSceneIndex;
     void Start(){
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -44,15 +45,15 @@ public class CollisionHandler : MonoBehaviour
                 case "CameraBounds":
                     break; //ignore
                 case "Friendly":
-                    UnityEngine.Debug.Log("You landed on a launch Pad");
                     break;
                 case "Finish":
                     UnityEngine.Debug.Log("You completed the level");
                     SuccessSequence();
                     break;
                 default:
-                    UnityEngine.Debug.Log("you Crashed");
                     CrashSequence();
+                    deathCounter++;
+                    UnityEngine.Debug.Log("You suck, you died " + deathCounter + " times");
                     break;
             }
         
